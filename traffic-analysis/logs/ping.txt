@@ -1,0 +1,16 @@
+anton@anton-N56JRH:~$ ping ok.ru -c1
+PING ok.ru (5.61.23.11) 56(84) bytes of data.
+64 bytes from ip11.23.odnoklassniki.ru (5.61.23.11): icmp_seq=1 ttl=57 time=16.5 ms
+
+--- ok.ru ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 16.576/16.576/16.576/0.000 ms
+
+anton@anton-N56JRH:~$ ping ok.ru -s4000 -c1
+PING ok.ru (217.20.155.13) 4000(4028) bytes of data.
+4008 bytes from ip13.155.odnoklassniki.ru (217.20.155.13): icmp_seq=1 ttl=56 time=18.7 ms
+
+--- ok.ru ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 18.796/18.796/18.796/0.000 ms
+

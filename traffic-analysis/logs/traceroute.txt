@@ -1,0 +1,11 @@
+anton@anton-N56JRH:~$ traceroute ok.ru
+traceroute to ok.ru (217.20.155.13), 30 hops max, 60 byte packets
+ 1  testwifi.here (192.168.86.1)  8.260 ms  8.205 ms  8.174 ms
+ 2  * * *
+ 3  Router.sknt.ru (93.100.0.11)  15.543 ms  15.531 ms  15.504 ms
+ 4  185.37.128.85 (185.37.128.85)  38.141 ms  38.131 ms  38.104 ms
+ 5  dp-1.spbix.m100.ru (194.226.100.250)  21.794 ms  20.693 ms  21.721 ms
+ 6  * * *
+...
+30  * * *
+

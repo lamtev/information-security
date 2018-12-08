@@ -1,0 +1,28 @@
+anton@anton-N56JRH:~$ ifconfig
+enp4s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.1.99.80  netmask 255.255.255.0  broadcast 10.1.99.255
+        inet6 fe80::4813:13b:cefa:3879  prefixlen 64  scopeid 0x20<link>
+        ether 40:16:7e:90:cf:09  txqueuelen 1000  (Ethernet)
+        RX packets 203087  bytes 233810354 (233.8 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 110981  bytes 57001326 (57.0 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000 (Loopback)
+        RX packets 1553  bytes 139519 (139.5 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1553  bytes 139519 (139.5 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlp3s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.91  netmask 255.255.255.0  broadcast 192.168.0.255
+        inet6 fe80::e1aa:8344:6733:1769  prefixlen 64  scopeid 0x20<link>
+        ether ac:7b:a1:78:67:16  txqueuelen 1000  (Ethernet)
+        RX packets 1111  bytes 140513 (140.5 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 373  bytes 57500 (57.5 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
