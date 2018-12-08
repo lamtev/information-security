@@ -1,0 +1,98 @@
+\include{settings}
+
+\begin{document}
+
+\include{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+\section{Цель работы}
+
+Научиться анализировать сетевой трафик при помощи программы \code{WireShark}.
+
+\section{Программа работы}
+
+Проанализировать сетевой трафик:
+
+\begin{enumerate}
+	\item Протокола ARP
+	\item Протокола ICMP
+	\begin{itemize}
+		\item ping без фрагментации
+		\item ping с фрагментацией
+		\item tracert
+		\item ошибки 3/1
+	\end{itemize}
+	\item Протокола UDP
+	\item Протокола TCP
+\end{enumerate}
+
+\section{Условия сети}
+
+Часть работы была выполнена в сети кафедры. Её конфигурация представлена в листинге \ref{lst:net-kspt}.
+
+\lstinputlisting[caption={Конфигурация сети кафедры},label={lst:net-kspt},basicstyle=\scriptsize]{ifconfig-kspt.txt}
+
+
+Другая часть работы была выполнена в домашней сети, конфигурация которой представлена в листинге \ref{lst:net-home}.
+
+\lstinputlisting[caption={Конфигурация домашней сети},label={lst:net-home},basicstyle=\scriptsize]{ifconfig-home.txt}
+
+\section{Протокол ARP}
+
+Рассмотрим принцип действия протокола ARP. Выполним широковещательный ARP-запрос, отправив ping пакет другому узлу сети по адресу \code{10.1.99.131}.  На рис. \ref{fig:arp-req} представлен ARP-пакет.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{arp-req}
+	\caption{ARP-запрос}
+	\label{fig:arp-req}
+\end{figure}
+
+Затем, узел сети по адресу \code{10.1.99.131} отправляет широковещательный ARP-ответ, который представлен на рис. \ref{fig:arp-resp}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{arp-resp}
+	\caption{ARP-ответ}
+	\label{fig:arp-resp}
+\end{figure}
+
+После этого он отправляет широковещательный ARP-запрос с целью узнать наш ip адрес. И наконец, мы отправляем ARP-ответ. Эти 2 ARP-пакета представлены на рис. \ref{fig:arp-req2} и \ref{fig:arp-resp2} соответственно. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{arp-req2}
+	\caption{ARP-запрос}
+	\label{fig:arp-req2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{arp-resp2}
+	\caption{ARP-ответ}
+	\label{fig:arp-resp2}
+\end{figure}
+
+\section{Протокол ICMP}
+
+\subsection{Утилита ping}
+
+Утилита ping отправляет ICMP эхо-запрос, на который, в случае успеха приходит ICMP эхо-ответ. Если пакет не пришел за определённое время, то удалённый хост считается недостижимым.
+
+\paragraph{Ping без фрагментации}
+
+\paragraph{Ping с фрагментацией}
+
+
+
+\section{Протокол UDP}
+
+\section{Протокол TCP}
+
+\section{Выводы}
+
+\end{document}
