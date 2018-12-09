@@ -5,24 +5,124 @@
 \include{titlepage}
 
 \tableofcontents
-\listoffigures
 \lstlistoflistings
 \newpage
 
-\section{Цель работы}
+\section{Цели работы}
 
-%\lstinputlisting[caption={Конфигурация сети кафедры},label={lst:net-kspt},keywords={ifconfig},basicstyle=\scriptsize]{ifconfig-kspt.txt}
+Научиться подписывать и проверять подлинность подписанного файла, а также шифровать и расшифровывать файлы с помощью \code{PGP}.
+
+\section{Программа работы}
+
+\begin{enumerate}
+	\item Установить \code{PGP} систему и посмотреть её возможности.
+	\item Создать пары \code{GPG} ключей на 2-х компьютерах и обменяться публичными ключами.
+	\item На 1-м компьютере подписать текстовое сообщение и убедиться в подлинности сообщения на другом компьютере.
+	\item На 2-м компьютере зашифровать текстовое сообщение публичным ключом 1-го компьютера и расшифровать его на 1-м компьютере.
+\end{enumerate}
+
+\section{Рабочее окружение}
+
+В качестве 1-го компьютера используется Asus N56JR с установленной на него ОС Ubuntu 18.04.1 LTS.
+
+В качестве 2-го компьютера используется MacBook Pro с установленной на него ОС macOS High Sierra.
+
+\section{Установка \code{PGP} системы \code{GnuPG} и рассмотрение её возможностей}
+
+\code{PGP} (англ. Pretty Good Privacy) --- компьютерная программа, также библиотека функций, позволяющая выполнять операции шифрования и цифровой подписи сообщений, файлов и другой информации, представленной в электронном виде, в том числе прозрачное шифрование данных на запоминающих устройствах, например, на жёстком диске.
+
+В данной работе было принято решение использовать в качестве \code{PGP} системы \code{GnuPG}, потому что она сразу поставляется с ОС Ubuntu, а значит уже была установлена на 1-м компьютере. На 2-й компьютер \code{GnuPG} был установлен вручную.
+
+В \code{GnuPG} поддерживаются следующие алгоритмы:
+\begin{itemize}
+	\item С открытым ключом:\\RSA, ELG, DSA, ECDH, ECDSA, EDDSA
+	\item Симметричные шифры:\\IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH, CAMELLIA128, CAMELLIA192, CAMELLIA256
+	\item Хеш-функции:\\SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+	\item Алгоритмы сжатия:\\Без сжатия, ZIP, ZLIB, BZIP2
+\end{itemize}
+
+\code{GnuPG} позволяет создавать пары ключей для асимметричного шифрования, ключи для симметричного шифрования, шифровать данные, расшифровывать их, пподписывать данные и удостоверяться в их подлинности.
+             
+\section{Создание пары \code{GPG} ключей на 2-х компьютерах и обмен публичными ключами}
+
+На 1-м компьютере сгенерируем пару \code{GPG} ключей c алгоритмом шифрования RSA и длиной ключа 3072 бита. Процесс представлен в листинге \ref{lst:gen-keys.ub}
+
+\lstinputlisting[caption={Создание пары ключей на 1-м компьютере},label={lst:gen-keys.ub},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{gen-keys.ub}
+
+Затем на 2-м компьютере сгенерируем пару \code{GPG} ключей c алгоритмом шифрования RSA и длиной ключа 3072 бита. Процесс представлен в листинге \ref{lst:gen-keys.mac}
+
+\lstinputlisting[caption={Создание пары ключей на 2-м компьютере},label={lst:gen-keys.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{gen-keys.mac}
+
+Заметим, что в обоих случаях автоматически создался сертификат отзыва ключа, который нужен на случай, если закрытый ключ попадёт в руки злоумышленников. С его мопощью можно отозвать ключ.
+
+Теперь на 1-м компьютере экспортируем публичный ключ \code{AntonLamtev.asc}, чтобы его можно было передать другому компьютеру. Выполнение команды представлено в листинге \ref{lst:export-pub.ub}.
+
+\lstinputlisting[caption={Экспортирование публичного ключа на 1-м компьютере},label={lst:export-pub.ub},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{export-pub.ub}
+
+Ключ \code{-a} (\code{armor}) позволяет экспортировать ключ в символьном формате ASCII. По умолчанию ключ экспортируется в бинарном виде.
+
+В листинге \ref{lst:AntonLamtev.asc} представлен экспортированный публичный ключ.
+
+\lstinputlisting[caption={Экспортированный публичный ключ AntonLamtev.asc},label={lst:AntonLamtev.asc},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{AntonLamtev.asc}
 
 
+Затем на 2-м компьютере экспортируем публичный ключ\\ \code{NotAntonNotLamtev.gpg}, чтобы его можно было передать другому компьютеру. Выполнение команды представлено в листинге \ref{lst:export-pub.mac}. Для разнообразия экспортируем ключ в бинарном виде.
 
+\lstinputlisting[caption={Экспортирование публичного ключа на 2-м компьютере},label={lst:export-pub.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{export-pub.mac}
 
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=1\textwidth]{ping-resp}
-%	\caption{Ping ICMP эхо-ответ (без фрагментации)}
-%	\label{fig:ping-resp}
-%\end{figure}
+Бинарное представление непрезентативно и громоздко, поэтому данный ключ не демонстрируется.
+
+Теперь выполним обмен публичными ключами между компьютерами 1 и 2. Далее требуется на каждом из компьютеров импортировать новый ключ и подписать его. В листинге \ref{lst:import-key.ub} эта процедура представлена для компьютера 1, а листинге \ref{lst:import-key.mac} --- для компьютера 2.
+
+\lstinputlisting[caption={Импортирование публичного ключа на компьютере 1},label={lst:import-key.ub},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{import-key.ub}
+
+\lstinputlisting[caption={Импортирование публичного ключа на компьютере 2},label={lst:import-key.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{import-key.mac}
+
+\section{Подпись текстового сообщения на 1-м компьютере и проверка его подлинности на 2-м компьютере}
+
+На 1-м компьютере создадим текстовый файл \code{signed\_message.txt} c текстом \code{Hello from Anton Lamtev!} (листинг \ref{lst:signed-message.txt}). Затем выполним электронную подпись данного файла. Данный процесс представлен в листинге \ref{lst:sign-message.ub}.
+
+\lstinputlisting[caption={Создание файла и его электронная подпись на компьютере 1},label={lst:sign-message.ub},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{sign-message.ub}
+
+\lstinputlisting[caption={Файл \code{signed\_message.txt}},label={lst:signed_message.txt},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{signed_message.txt}
+
+В результате появился файл \code{signed\_message.txt.sig} с подписью. Он является бинарным, потому что не использовался ключ \code{-a}.
+
+Теперь любой, у кого есть наш открытый ключ может убедиться в подлинности файла.
+
+Отправим файлы \code{signed\_message.txt} и code{signed\_message.txt.sig} на компьютер 2 и проверим подлинность файла с сообщением. Затем внесём изменения в файл с сообщением и проверим подлинность снова. Эта процедура представлена в листинге \ref{lst:check-sign.mac}
+
+\lstinputlisting[caption={Проверка подлинности файла на компьютере 2},label={lst:check-sign.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{check-sign.mac}
+
+Как видно в листинге, проверка подлинности показала, что исходный файл является подлинным, а вот файл после внесенных в него изменений является поддельным.
+
+\section{Шифрование текстового сообщения на 2-м компьютере публичным ключом 1-го компьютера и его расшифровка на 1-м компьютере}
+
+На 2-м компьютере создадим файл \code{encrypted\_message.txt} (листинг \ref{lst:encrypted_message.txt}). Затем зашифруем его открытым ключом 1-го компьютера. Команда вызвана с ключом \code{--armor}, поэтому зашифрованный файл будет в символьном ASCII формате. Через ключ \code{-r} передаётся электронная почта, соответствующая открытому ключу, которым нужно зашифровать файл. Процесс шифрования изображён в листинге \ref{lst:encrypt-message.mac}.
+
+\lstinputlisting[caption={Файл \code{encrypted\_message.txt}},label={lst:encrypted_message.txt},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{encrypted_message.txt}
+
+\lstinputlisting[caption={Шифрование файла \code{encrypted\_message.txt} открытым ключом компьютера 1},label={lst:encrypt-message.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{encrypt-message.mac}
+
+В результате получили зашифрованный файл \code{encrypted\_message.txt.asc}, он представлен в листинге \ref{lst:encrypted_message.txt.asc}.
+
+\lstinputlisting[caption={Зашифрованный файл \code{encrypted\_message.txt.asc}},label={lst:encrypted_message.txt.asc},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{encrypted_message.txt.asc}
+
+Теперь сначала попробуем расшифровать зашифрованный файл на 2-м компьютере (листинг \ref{lst:try-decrypt.mac}).
+
+\lstinputlisting[caption={Попытка расшифровать файл на компьютере 2},label={lst:try-decrypt.mac},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{try-decrypt.mac}
+
+Как видно в листинге, на 2-м компьютере нельзя расшифровать файл, который был зашифрован открытым ключом 1-го компьютера, потому что на 2-м компьютере отстутствует закрытый ключ 1-го компьютера.
+
+И наконец попробуем расшифровать зашифрованный файл на 1-м компьютере (листинг \ref{lst:try-decrypt.ub}).
+
+\lstinputlisting[caption={Попытка расшифровать файл на компьютере 1},label={lst:try-decrypt.ub},keywords={gpg, gpg2},keywordstyle=\color{red},basicstyle=\scriptsize]{try-decrypt.ub}
+
+В листинге видно, что файл был успешно расшифрован.
+
 
 \section{Вывод}
+
+В результате работы автор укрепил свои знания в области ассиметричного шифрования и научился создавать \code{GPG} ключи, подписывать файлы электронной подписью, проверять подписанные файлы на подлинность, шифровать данные и расшифровывать их c помощью программного обеспечения \code{GnuPG}.
 
 \end{document}
