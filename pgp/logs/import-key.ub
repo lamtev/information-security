@@ -1,0 +1,26 @@
+anton@anton-N56JRH:~$ gpg --import NotAntonNotLamtev.gpg 
+gpg: ключ F0DD166F048BF976: импортирован открытый ключ "NotAnton NotLamtev <notanton@notlamtev.com>"
+gpg: Всего обработано: 1
+gpg:               импортировано: 1
+anton@anton-N56JRH:~$ gpg --sign-key notanton@notlamtev.com
+
+pub  rsa3072/F0DD166F048BF976
+     создан: 2018-12-09  годен до: 2019-12-09  назначение: SC  
+     доверие: неизвестно достоверность: неизвестно
+sub  rsa3072/937391BF9D2831BC
+     создан: 2018-12-09  годен до: 2019-12-09  назначение: E   
+[ неизвестно ] (1). NotAnton NotLamtev <notanton@notlamtev.com>
+
+
+pub  rsa3072/F0DD166F048BF976
+     создан: 2018-12-09  годен до: 2019-12-09  назначение: SC  
+     доверие: неизвестно достоверность: неизвестно
+ Отпечаток первичного ключа: 4113 5103 6AD3 4BC6 E03B  5B20 F0DD 166F 048B F976
+
+     NotAnton NotLamtev <notanton@notlamtev.com>
+
+Срок действия данного ключа истекает 2019-12-09.
+Вы уверены, что хотите подписать этот ключ
+своим ключом "Anton Lamtev <anton@lamtev.com>" (563FD7EE89E254E4)?
+
+Действительно подписать? (y/N) y
