@@ -1,0 +1,31 @@
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --import AntonLamtev.asc 
+gpg: key 563FD7EE89E254E4: public key "Anton Lamtev <anton@lamtev.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --sign-key anton@lamtev.com
+
+gpg: checking the trustdb
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: next trustdb check due at 2019-12-09
+pub  rsa3072/563FD7EE89E254E4
+     created: 2018-12-09  expires: 2019-12-09  usage: SC  
+     trust: unknown       validity: unknown
+sub  rsa3072/F18016DCF6814827
+     created: 2018-12-09  expires: 2019-12-09  usage: E   
+[ unknown] (1). Anton Lamtev <anton@lamtev.com>
+
+
+pub  rsa3072/563FD7EE89E254E4
+     created: 2018-12-09  expires: 2019-12-09  usage: SC  
+     trust: unknown       validity: unknown
+ Primary key fingerprint: 1A17 1DF9 FA38 EAB4 87F5  B51D 563F D7EE 89E2 54E4
+
+     Anton Lamtev <anton@lamtev.com>
+
+This key is due to expire on 2019-12-09.
+Are you sure that you want to sign this key with your
+key "NotAnton NotLamtev <notanton@notlamtev.com>" (F0DD166F048BF976)
+
+Really sign? (y/N) y

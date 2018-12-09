@@ -1,0 +1,53 @@
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --full-gen-key
+gpg (GnuPG) 2.2.11; Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+gpg: directory '/Users/anton.lamtev/.gnupg' created
+gpg: keybox '/Users/anton.lamtev/.gnupg/pubring.kbx' created
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 1
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048) 3072
+Requested keysize is 3072 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0) 1y
+Key expires at Mon Dec  9 19:15:56 2019 MSK
+Is this correct? (y/N) y
+
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: NotAnton NotLamtev
+Email address: notanton@notlamtev.com
+Comment: 
+You selected this USER-ID:
+    "NotAnton NotLamtev <notanton@notlamtev.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+vsdasfasdfWe need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+sdgpg: /Users/anton.lamtev/.gnupg/trustdb.gpg: trustdb created
+gpg: key F0DD166F048BF976 marked as ultimately trusted
+gpg: directory '/Users/anton.lamtev/.gnupg/openpgp-revocs.d' created
+gpg: revocation certificate stored as '/Users/anton.lamtev/.gnupg/openpgp-revocs.d/411351036AD34BC6E03B5B20F0DD166F048BF976.rev'
+public and secret key created and signed.
+
+pub   rsa3072 2018-12-09 [SC] [expires: 2019-12-09]
+      411351036AD34BC6E03B5B20F0DD166F048BF976
+uid                      NotAnton NotLamtev <notanton@notlamtev.com>
+sub   rsa3072 2018-12-09 [E] [expires: 2019-12-09]

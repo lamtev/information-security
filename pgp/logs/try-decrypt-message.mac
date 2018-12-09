@@ -1,0 +1,4 @@
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 encrypted_message.txt.asc 
+gpg: encrypted with 3072-bit RSA key, ID F18016DCF6814827, created 2018-12-09
+      "Anton Lamtev <anton@lamtev.com>"
+gpg: decryption failed: No secret key

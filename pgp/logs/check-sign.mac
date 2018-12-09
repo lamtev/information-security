@@ -1,0 +1,14 @@
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --verify signed_message.txt.sig signed_message.txt
+gpg: Signature made Sun Dec  9 19:31:56 2018 MSK
+gpg:                using RSA key 1A171DF9FA38EAB487F5B51D563FD7EE89E254E4
+gpg: checking the trustdb
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: depth: 0  valid:   1  signed:   1  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   1  signed:   0  trust: 1-, 0q, 0n, 0m, 0f, 0u
+gpg: next trustdb check due at 2019-12-09
+gpg: Good signature from "Anton Lamtev <anton@lamtev.com>" [full]
+MacBook-Pro-Anton:~ anton.lamtev$ echo "Hack" >> signed_message.txt
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --verify signed_message.txt.sig signed_message.txt
+gpg: Signature made Sun Dec  9 19:31:56 2018 MSK
+gpg:                using RSA key 1A171DF9FA38EAB487F5B51D563FD7EE89E254E4
+gpg: BAD signature from "Anton Lamtev <anton@lamtev.com>" [full]
