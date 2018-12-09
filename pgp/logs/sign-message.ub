@@ -1,0 +1,2 @@
+anton@anton-N56JRH:~$ echo "Hello from Anton Lamtev!" >> signed_message.txt
+anton@anton-N56JRH:~$ gpg --detach-sign signed_message.txt

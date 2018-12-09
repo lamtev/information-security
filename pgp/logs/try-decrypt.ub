@@ -1,0 +1,5 @@
+anton@anton-N56JRH:~$ gpg encrypted_message.txt.asc 
+gpg: зашифровано 3072-битным ключом RSA с идентификатором F18016DCF6814827, созданным 2018-12-09
+      "Anton Lamtev <anton@lamtev.com>"
+anton@anton-N56JRH:~$ cat encrypted_message.txt
+Hello from not Anton not Lamtev\!
