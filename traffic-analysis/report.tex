@@ -6,7 +6,7 @@
 
 \tableofcontents
 \listoffigures
-\listoftables
+\lstlistoflistings
 \newpage
 
 \section{Цель работы}
@@ -23,27 +23,32 @@
 	\begin{itemize}
 		\item ping без фрагментации
 		\item ping с фрагментацией
-		\item tracert
-		\item ошибки 3/1
+		\item traceroute
+		\item ошибка 3/1
 	\end{itemize}
 	\item Протокола UDP
 	\item Протокола TCP
+	\begin{itemize}
+		\item установление соединения
+		\item закрытие соединения
+		\item флаг \code{RST}
+	\end{itemize}
 \end{enumerate}
 
 \section{Условия сети}
 
 Часть работы была выполнена в сети кафедры. Её конфигурация представлена в листинге \ref{lst:net-kspt}.
 
-\lstinputlisting[caption={Конфигурация сети кафедры},label={lst:net-kspt},basicstyle=\scriptsize]{ifconfig-kspt.txt}
+\lstinputlisting[caption={Конфигурация сети кафедры},label={lst:net-kspt},keywords={ifconfig},basicstyle=\scriptsize]{ifconfig-kspt.txt}
 
 
 Другая часть работы была выполнена в домашней сети, конфигурация которой представлена в листинге \ref{lst:net-home}.
 
-\lstinputlisting[caption={Конфигурация домашней сети},label={lst:net-home},basicstyle=\scriptsize]{ifconfig-home.txt}
+\lstinputlisting[caption={Конфигурация домашней сети},label={lst:net-home},keywords={ifconfig},basicstyle=\scriptsize]{ifconfig-home.txt}
 
 \section{Протокол ARP}
 
-Рассмотрим принцип действия протокола ARP. Выполним широковещательный ARP-запрос, отправив ping пакет другому узлу сети по адресу \code{10.1.99.131}.  На рис. \ref{fig:arp-req} представлен ARP-пакет.
+Рассмотрим принцип действия протокола ARP. Выполним широковещательный ARP-запрос в домашней сети, отправив ping пакет другому узлу сети (домашняя сеть) по адресу \code{192.168.86.246}.  На рис. \ref{fig:arp-req} представлен ARP-запрос.
 
 \begin{figure}[H]
 	\centering
@@ -52,29 +57,13 @@
 	\label{fig:arp-req}
 \end{figure}
 
-Затем, узел сети по адресу \code{10.1.99.131} отправляет широковещательный ARP-ответ, который представлен на рис. \ref{fig:arp-resp}
+Затем, узел сети по адресу \code{192.168.86.246} отправляет нам ARP-ответ, который представлен на рис. \ref{fig:arp-resp}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{arp-resp}
 	\caption{ARP-ответ}
 	\label{fig:arp-resp}
-\end{figure}
-
-После этого он отправляет широковещательный ARP-запрос с целью узнать наш ip адрес. И наконец, мы отправляем ARP-ответ. Эти 2 ARP-пакета представлены на рис. \ref{fig:arp-req2} и \ref{fig:arp-resp2} соответственно. 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth]{arp-req2}
-	\caption{ARP-запрос}
-	\label{fig:arp-req2}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1\textwidth]{arp-resp2}
-	\caption{ARP-ответ}
-	\label{fig:arp-resp2}
 \end{figure}
 
 \section{Протокол ICMP}
@@ -85,14 +74,201 @@
 
 \paragraph{Ping без фрагментации}
 
+Т.к. для Ethernet 2 размер MTU равен 1500 байтов (без заголовка -- 1480), то для отправки пакетов утилитой ping без фрагментации ничего не нужно делать, т.к. размер пакета по умолчанию не превышает MTU.
+
+Отправим с помощью утилиты ping ICMP эхо-запрос сайту ok.ru (листинг \ref{lst:ping}). Он представлен на рис. \ref{fig:ping-req}.
+
+\lstinputlisting[caption={Ping без фрагментации},label={lst:ping},keywords={ping}]{ping.txt}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{ping-req}
+	\caption{Ping ICMP эхо-запрос (без фрагментации)}
+	\label{fig:ping-req}
+\end{figure}
+
+Затем нам приходит от сайта ok.ru ICMP эхо-ответ (рис. \ref{fig:ping-resp}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{ping-resp}
+	\caption{Ping ICMP эхо-ответ (без фрагментации)}
+	\label{fig:ping-resp}
+\end{figure}
+
+\newpage
+
 \paragraph{Ping с фрагментацией}
 
+Для достижения фрагментации пакета, зададим его размер равным 4000 байтов (листинг \ref{lst:ping-frag}).
 
+\lstinputlisting[caption={Ping с фрагментацией},label={lst:ping-frag},keywords={ping}]{ping-frag.txt}
+
+Отправленный пакет представлен на рис. \ref{fig:ping-req-frag}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{ping-req-frag}
+	\caption{Ping ICMP эхо-запрос (с фрагментацией)}
+	\label{fig:ping-req-frag}
+\end{figure}
+
+Затем нам приходит от сайта ok.ru ICMP эхо-ответ (рис. \ref{fig:ping-resp-frag}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{ping-resp-frag}
+	\caption{Ping ICMP эхо-ответ (с фрагментацией)}
+	\label{fig:ping-resp-frag}
+\end{figure}
+
+\subsection{Утилита traceroute}
+
+Утилита traceroute отправляет ICMP эхо-запросы, инкрементируя поле TTL, пока приходят ошибки истечения TTL вместо эхо-ответа. Изначальное значение поля TTL = 1.
+
+Выполним трассировку маршрута до сайта ok.ru (листинг \ref{lst:trace}).
+
+\lstinputlisting[caption={Трассировка маршрута до ok.ru},label={lst:trace},keywords={traceroute}]{traceroute.txt}
+
+В листинге видно, что удалось отследить маршрут только до маршрутизатора \code{dp-1.spbix.m100.ru}.
+
+На рис. \ref{fig:trace1} --- \ref{fig:trace4} изображены ICMP ответы четырёх промежуточных маршрутизаторов, до которых удалось дойти.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{trace1}
+	\caption{ICMP ответ маршрутизатора домашней сети}
+	\label{fig:trace1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{trace2}
+	\caption{ICMP ответ маршрутизатора провайдера \code{sknt.ru}}
+	\label{fig:trace2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{trace3}
+	\caption{ICMP ответ маршрутизатора \code{185.37.128.85}}
+	\label{fig:trace3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{trace4}
+	\caption{ICMP ответ маршрутизатора \code{dp-1.spbix.m100.ru}}
+	\label{fig:trace4}
+\end{figure}
+
+\subsection{Ошибка 3/1}
+
+Для получения ICMP ошибки 3/1 (Хост недостижим), выполним ping хоста \code{10.1.17.3} сети кафедры. ICMP-ответ с ошибкой предствален на рис. \ref{fig:icmp31}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{icmp31}
+	\caption{ICMP ответ 3/1}
+	\label{fig:icmp31}
+\end{figure}
+
+\newpage
 
 \section{Протокол UDP}
 
+Развернём на хосте \code{192.168.86.246} UDP сервер на порту 1234. Затем на нашем хосте \code{192.168.86.41} запустим клиентское приложение и выполним сервер запрос. Он изображён на рис. \ref{fig:udp-req}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{udp-req}
+	\caption{Запрос на сервер по UDP}
+	\label{fig:udp-req}
+\end{figure}
+
+Сервер реализован таким образом, что на правильно сформированный запрос он отправляет ответ. Ответ представлен на рис. \ref{fig:udp-resp}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{udp-resp}
+	\caption{Ответ UDP сервера}
+	\label{fig:udp-resp}
+\end{figure}
+
 \section{Протокол TCP}
 
+Развернём на хосте \code{192.168.86.246} TCP сервер на порту 1234. 
+
+\subsection{Установление соединения}
+
+На нашем хосте \code{192.168.86.41} запустим клиентское приложение. Оно сразу при запуске пытается установить соединение с сервером. Как видно на рис. \ref{fig:tcp-syn} -- \ref{fig:tcp-ack} соединение происходит за 3 шага:
+
+\begin{enumerate}
+	\item Клиент отправляет SYN
+	\item Сервер отправляет SYN и \code{ACK}
+	\item Клиент отправляет \code{ACK}
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-syn}
+	\caption{Отправка клиентом SYN}
+	\label{fig:tcp-syn}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-synack}
+	\caption{Отправка сервером SYN и \code{ACK}}
+	\label{fig:tcp-synack}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-ack}
+	\caption{Отправка клиентом \code{ACK}}
+	\label{fig:tcp-ack}
+\end{figure}
+
+\subsection{Закрытие соединения}
+
+На хосте \code{192.168.86.246}, на котором развёрнут сервер инициируем разрыв соединения, отправив клиенту \code{FIN} и \code{ACK}. После этого клиент отправляет серверу \code{ACK}, и соединение считается закрытым.
+
+На рис. \ref{fig:tcp-finack} изображён TCP-сегмент с \code{FIN} и \code{ACK}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-finack}
+	\caption{Отправка сервером \code{FIN} и \code{ACK}}
+	\label{fig:tcp-finack}
+\end{figure}
+
+На рис. \ref{fig:tcp-finack-ack} изображён TCP-сегмент с \code{ACK}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-finack-ack}
+	\caption{Отправка клиентом \code{ACK}}
+	\label{fig:tcp-finack-ack}
+\end{figure}
+
+\subsection{Флаг \code{RST}}
+
+Завершим работу TCP сервера, развёрнутого на хосте \code{192.168.86.246}. После этого запустим на нашем хосте клиентское приложение, которое сразу попытается установить соединение. Но этого сделать не удаётся -- на \code{SYN} приходит \code{RST} и \code{ACK}. TCP-сегмент с \code{RST} и \code{ACK} представлен на рис. \ref{fig:tcp-rstack}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\textwidth]{tcp-rstack}
+	\caption{TCP-сегмент с \code{RST} и \code{ACK}}
+	\label{fig:tcp-rstack}
+\end{figure}
+
 \section{Выводы}
+
+В ходе работы с помощью утилиты \code{WireShark} был рассмотрен трафик протоколов ARP, ICMP, UDP и TCP. Также были рассмотрены утилиты ping и traceroute, которые, используя протокол ICMP, позволяют определить достижимость удалённого хоста и трассировать маршрут до удалённого хоста соответственно.
+
+Утилита \code{WireShark} оказалась очень удобным инструментом для анализа трафик, потому что она позволяет гибко фильтровать трафик, например, по протоколу.
+
+Главный вывод заключается в том, что внутри одной сети можно просмотреть абсолютно весь трафик, и если протокол не использует шифрование, как, например, какой-либо строковый протокол на основе TCP, то данные пересылаемые с его помощью легко прочитать, чем могут воспользоваться злоумышленники.
 
 \end{document}
