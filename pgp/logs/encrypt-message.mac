@@ -1,0 +1,2 @@
+MacBook-Pro-Anton:~ anton.lamtev$ echo "Hello from not Anton not Lamtev\!" >> encrypted_message.txt
+MacBook-Pro-Anton:~ anton.lamtev$ gpg2 --encrypt --armor -r anton@lamtev.com encrypted_message.txt
