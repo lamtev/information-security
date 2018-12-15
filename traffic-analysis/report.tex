@@ -204,22 +204,22 @@
 На нашем хосте \code{192.168.86.41} запустим клиентское приложение. Оно сразу при запуске пытается установить соединение с сервером. Как видно на рис. \ref{fig:tcp-syn} -- \ref{fig:tcp-ack} соединение происходит за 3 шага:
 
 \begin{enumerate}
-	\item Клиент отправляет SYN
-	\item Сервер отправляет SYN и \code{ACK}
+	\item Клиент отправляет \code{SYN}
+	\item Сервер отправляет \code{SYN} и \code{ACK}
 	\item Клиент отправляет \code{ACK}
 \end{enumerate}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{tcp-syn}
-	\caption{Отправка клиентом SYN}
+	\caption{Отправка клиентом \code{SYN}}
 	\label{fig:tcp-syn}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{tcp-synack}
-	\caption{Отправка сервером SYN и \code{ACK}}
+	\caption{Отправка сервером \code{SYN} и \code{ACK}}
 	\label{fig:tcp-synack}
 \end{figure}
 
@@ -308,10 +308,10 @@
 	\centering
 	\includegraphics[width=0.9\textwidth]{traceroute-udp4}
 	\caption{Отправка \code{traceroute} UDP дейтаграммы на порт 33446}
-	\label{fig:trace-udp3}
+	\label{fig:trace-udp4}
 \end{figure}
 
-\section{Дополнение к опыту <<ping с фрагментацией>>}
+\subsection{Дополнение к опыту <<ping с фрагментацией>>}
 
 На рис. \ref{fig:ping-list} представлен порядок отправки и получения IP пакетов.
 
@@ -352,6 +352,6 @@
 	\label{fig:ping-fraq-resp-ip2}
 \end{figure}
 
-Как в случае ICMP эхо-запроса, так и в случае ICMP эхо ответа, ICMP заголовок находится в третьем IP фрагменте.
+Как в случае ICMP эхо-запроса, так и в случае ICMP эхо ответа, ICMP заголовок находится в третьем, т.е. последнем, IP фрагменте.
 
 \end{document}
