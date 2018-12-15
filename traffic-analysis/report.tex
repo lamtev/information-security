@@ -23,7 +23,7 @@
 	\begin{itemize}
 		\item \code{ping} без фрагментации
 		\item \code{ping} с фрагментацией
-		\item \code{tracerout}
+		\item \code{traceroute}
 		\item ошибка 3/1
 	\end{itemize}
 	\item Протокола UDP
@@ -122,9 +122,9 @@
 	\label{fig:ping-resp-frag}
 \end{figure}
 
-\subsection{Утилита \code{tracerout}}
+\subsection{Утилита \code{traceroute}}\label{sec:traceroute}
 
-Утилита \code{tracerout} отправляет ICMP эхо-запросы, инкрементируя поле TTL, пока приходят ошибки истечения TTL вместо эхо-ответа. Изначальное значение поля TTL = 1.
+Утилита \code{traceroute} отправляет ICMP эхо-запросы, инкрементируя поле TTL, пока приходят ошибки истечения TTL вместо эхо-ответа. Изначальное значение поля TTL = 1.
 
 Выполним трассировку маршрута до сайта ok.ru (листинг \ref{lst:trace}).
 
@@ -265,10 +265,93 @@
 
 \section{Выводы}
 
-В ходе работы с помощью утилиты \code{WireShark} был рассмотрен трафик протоколов ARP, ICMP, UDP и TCP. Также были рассмотрены утилиты \code{ping} и \code{tracerout}, которые, используя протокол ICMP, позволяют определить достижимость удалённого хоста и трассировать маршрут до удалённого хоста соответственно.
+В ходе работы с помощью утилиты \code{WireShark} был рассмотрен трафик протоколов ARP, ICMP, UDP и TCP. Также были рассмотрены утилиты \code{ping} и \code{traceroute}, которые, используя протокол ICMP, позволяют определить достижимость удалённого хоста и трассировать маршрут до удалённого хоста соответственно.
 
 Утилита \code{WireShark} оказалась очень удобным инструментом для анализа трафик, потому что она позволяет гибко фильтровать трафик, например, по протоколу.
 
 Главный вывод заключается в том, что внутри одной сети можно просмотреть абсолютно весь трафик, и если протокол не использует шифрование, как, например, какой-либо строковый протокол на основе TCP, то данные пересылаемые с его помощью легко прочитать, чем могут воспользоваться злоумышленники.
+
+\section{Приложение}
+
+\subsection{Дополнение к опыту с утилитой \code{traceroute}}
+
+Утилита \code{tracert} (которая установлена в ОС Windows), в действительности работает по принципу, описанному в разделе \ref{sec:traceroute}, т.е, в её основе польностью лежит \code{ICMP}. А опыт на самом деле проводился на хосте с ОС Linux c помощью похожей утилиты -- \code{traceroute}. Назначение у неё такое же как и у \code{tracert}, а реализация другая.
+
+\code{traceroute} основана не на отправке ICMP эхо-запросов, а на отправке UDP фрагментов и получения сообщения о доступности/достижимости порта. Host генерирует UDP фрагмент, инкапсулирует его в IP пакет и выставляет TTL=1. Первый маршрутизатор на пути, являясь транзитным узлом, ответит на данный пакет ICMP сообщением об окончании времени жизни пакета. Утилита \code{traceroute}, получив данное сообщение, указывает адрес источника ICMP пакета как адрес первого хопа. Далее процесс повторяется с инкрементированием TTL пакета. Тут встаёт вопрос --- как утилите понять, что трассировка закончена? В UDP заголовке есть поля source port и destination port. Destination порт устанавливается 33434 (это число инкрементируется с каждой попыткой). Когда пакет доходит до сервера назначения, сервер его распаковывает. Понимая, что порт, указанный в заголовке как destination port, у него закрыт, он отправляет ICMP сообщение (ICMP Type 3 <<Destination Unreachable>> Code 3 <<Port Unreachable>>).  Получив данное сообщение, утилита \code{traceroute} считает трассировку законченной.
+
+В опыте, проведённом в разделе \ref{sec:traceroute}, удалось отследить маршрут лишь до промежуточного маршрутизатора, поэтому ICMP сообщения 3/3 не было.
+
+Повторим опыт для демонстрации отправки UDP дейтаграмм. На рис. \ref{fig:trace-udp1} --- \ref{fig:trace-udp4} приведены дэйтаграммы, которые соответствуют ICMP сообщениям в разделе \ref{sec:traceroute}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{traceroute-udp1}
+	\caption{Отправка \code{traceroute} UDP дейтаграммы на порт 33434}
+	\label{fig:trace-udp1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{traceroute-udp2}
+	\caption{Отправка \code{traceroute} UDP дейтаграммы на порт 33440}
+	\label{fig:trace-udp2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{traceroute-udp3}
+	\caption{Отправка \code{traceroute} UDP дейтаграммы на порт 33443}
+	\label{fig:trace-udp3}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{traceroute-udp4}
+	\caption{Отправка \code{traceroute} UDP дейтаграммы на порт 33446}
+	\label{fig:trace-udp3}
+\end{figure}
+
+\section{Дополнение к опыту <<ping с фрагментацией>>}
+
+На рис. \ref{fig:ping-list} представлен порядок отправки и получения IP пакетов.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ping-fraq-list}
+	\caption{Порядок отправки и получения IP пакетов}
+	\label{fig:ping-list}
+\end{figure}
+
+На рис. \ref{fig:ping-fraq-req-ip1} -- \ref{fig:ping-fraq-resp-ip2} изображены IP пакеты: первые 2 содержат фрагменты ICMP эхо-запроса, а вторые 2 содержат фрагменты ICMP эхо-ответа.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ping-fraq-req-ip1}
+	\caption{Перый фрагмент ICMP эхо-запроса}
+	\label{fig:ping-fraq-req-ip1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ping-fraq-req-ip1}
+	\caption{Второй фрагмент ICMP эхо-запросав}
+	\label{fig:ping-fraq-req-ip2}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ping-fraq-resp-ip1}
+	\caption{Перый фрагмент ICMP эхо-ответа}
+	\label{fig:ping-fraq-resp-ip1}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{ping-fraq-resp-ip2}
+	\caption{Второй фрагмент ICMP эхо-ответа}
+	\label{fig:ping-fraq-resp-ip2}
+\end{figure}
+
+Как в случае ICMP эхо-запроса, так и в случае ICMP эхо ответа, ICMP заголовок находится в третьем IP фрагменте.
 
 \end{document}
