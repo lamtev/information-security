@@ -1,0 +1,9 @@
+anton@anton-N56JRH:~$ echo "hello from anton!" > msg.txt
+anton@anton-N56JRH:~$ cat msg.txt
+hello from anton!
+anton@anton-N56JRH:~$ gpg --encrypt --symmetric --cipher-algo IDEA msg.txt 
+ 
+anton@anton-N56JRH:~$ gpg --decrypt msg.txt.gpg 
+gpg: данные зашифрованы алгоритмом IDEA
+gpg: зашифровано одной фразой-паролем
+hello from anton!
